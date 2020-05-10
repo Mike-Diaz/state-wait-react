@@ -14,7 +14,7 @@ var yy = currentDateElement.getUTCFullYear();
 var currentDateString = dd.toString() + "/" + mm + "/" + yy.toString();
 
 // Initializes the calendar itself and provides some parameters for the design and functionality
-var myCalendar = jsCalendar.new(element, currentDateString, {
+var myCalendar  = jsCalendar.new(element, currentDateString, {
     navigator: true,
     navigatorPosition: "center",
     zeroFill: false,
@@ -126,3 +126,5 @@ function addDates(startDate, noOfDaysToAdd) {
 
     return startDate;
 }
+
+export default myCalendar;
