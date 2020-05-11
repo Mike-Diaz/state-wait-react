@@ -1,5 +1,10 @@
+import {jsCalendar} from './jsCalendar';
+import allFederalHolidaysForYear from './holidays';
+
+
 // Get the element
-var element = document.getElementById("my-calendar");
+var element = ref;
+// var element = document.getElementById("my-calendar");
 // Create the calendar
 var currentDateElement = new Date();
 // Get the current year only
@@ -50,7 +55,7 @@ var currentHoliday = new Date(Date.parse(currentHoliday));
 function highlightHolidays(pVisibleMonth) {
     holidaysNew = allFederalHolidaysForYear(myCalendar._date.getFullYear());
 
-    visibleMonth = pVisibleMonth;
+    let visibleMonth = pVisibleMonth;
     //myCalendar._date.getMonth() + 1;
 
     for (let holiday of holidaysNew) {
@@ -106,7 +111,7 @@ myCalendar.onDateClick(function (event, date) {
 function addDates(startDate, noOfDaysToAdd) {
     var count = 0;
     while (count < noOfDaysToAdd) {
-        endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+        var endDate = new Date(startDate.setDate(startDate.getDate() + 1));
         console.log(myCalendar.isHighlighted(endDate));
         // Skip sundays and current holidays
         // getDay method gets the current day of the week 1-7
@@ -126,5 +131,3 @@ function addDates(startDate, noOfDaysToAdd) {
 
     return startDate;
 }
-
-export default myCalendar;

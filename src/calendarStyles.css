@@ -1,0 +1,12 @@
+.react-calendar {
+    border-radius: 4px;
+    width: auto;
+    max-width: 100%;
+    background: white;
+    font: inherit;
+    line-height: 1.125em;
+    border: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    box-shadow: 0 30px 40px 0 rgba(16, 36, 94, 0.2);
+}

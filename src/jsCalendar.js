@@ -1350,7 +1350,7 @@ var jsCalendar = (function(){
         };
 
         // Get a new object
-        JsCalendar.new = function(){
+         JsCalendar.new = function(){
             // Create new object
             var obj = new JsCalendar();
             // Construct calendar
