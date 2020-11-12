@@ -1,45 +1,52 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useTheme } from '@material-ui/core/styles';
+import React from 'react';
 import { ResponsiveContainer } from 'recharts';
 import Title from './Title.jsx';
+import Typography from '@material-ui/core/Typography';
 import Calendar from 'react-calendar';
-import {allFederalHolidaysForYear} from './federalHolidays';
+import { allFederalHolidaysForYear } from './federalHolidays';
 import 'react-calendar/dist/Calendar.css';
 import './calendarStyles.css';
 
-const federalHolidaysForYear = () => {
-    let allFedHolidays = allFederalHolidaysForYear();
+const highlightHolidays = (pVisibleMonth) => {
+    let holidaysNew = allFederalHolidaysForYear();
 
-    //console.log(allFedHolidays);
+    let visibleMonth = pVisibleMonth;
 
-    return allFedHolidays;
+    let holidayArray = [];
+
+    for (let holiday of holidaysNew) {
+        if (holiday.date.getUTCMonth() + 1 === visibleMonth) {
+            holidayArray.push(holiday);
+        }
+        if (holiday.date.getUTCMonth() > visibleMonth) {
+            break;
+        }
+    }
+
+    return holidayArray;
+};
+
+const traverseHolidays = (date) => {
+    let nowDate = new Date();
+    let holidays = highlightHolidays(nowDate.getUTCMonth() + 1);
+
+    for (let holiday of holidays) {
+        if (holiday.date.toString() === date.toString()) {
+            console.log(date.toString());
+            return (holiday.name);
+        }
+    }
 }
 
-federalHolidaysForYear();
-
-
 export default function ReactCalendar() {
-    const theme = useTheme();
 
-    let nowDate = new Date();
-
-    const [date, setDate] = useState(nowDate)
-    let [currentHoliday, setCurrentHoliday] = useState(federalHolidaysForYear()[nowDate.getMonth() - 1].date);
-
-    function handleOnClickMonth(){
-        setCurrentHoliday = (federalHolidaysForYear()[nowDate.getMonth() - 1].date);
-    }
-    
     return (
         <React.Fragment>
             <Title>Calendar</Title>
             <ResponsiveContainer>
                 <Calendar
-                    value={currentHoliday}
-                    // onClickDay={handleOnClickDay}
-                    onClickMonth={handleOnClickMonth()}
-                    // onClickDay={handleOnClickDay()} TODO: Create func using fed holidays to calculate 10 business days
-                    onViewChange={({activeStartDate, view}) => alert('New view is: ', view)}
+                    tileContent={({ date, view }) => view === 'month' && traverseHolidays(date) ? <Typography>{traverseHolidays(date)}</Typography> : null}
+                    tileDisabled={({ date }) => date.getDay() === 0}
                 ></Calendar>
             </ResponsiveContainer>
         </React.Fragment>
