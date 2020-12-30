@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ResponsiveContainer } from 'recharts';
 import Title from './Title.jsx';
 import Typography from '@material-ui/core/Typography';
@@ -32,22 +32,63 @@ const traverseHolidays = (date) => {
 
     for (let holiday of holidays) {
         if (holiday.date.toString() === date.toString()) {
-            console.log(date.toString());
             return (holiday.name);
         }
     }
 }
 
+const isHoliday = (view, date) => {
+    if ( view === 'month' && traverseHolidays(date)){
+        return true;
+    } else{
+        return false;
+    }
+}
+
+let tileClassName = ({ date, view }) => {
+    // Add class to tiles in month view only
+    if (view === 'month') {
+      // Check if a date React-Calendar wants to check is on the list of dates to add class to
+      if (isHoliday(view, date)) {
+        return 'react-calendar--holiday';
+      }
+    }
+}
+
+
+let tileContent = ({date, view}) => {
+    if(isHoliday(view, date)){
+        return (
+            <Typography>{traverseHolidays(date)}</Typography>
+        );
+    } else {
+        return null
+    }
+}
+
+
+
+
 export default function ReactCalendar() {
+
+    let [dateRange, setDateRange] = useState(new Date());
+
+
+    let calcDateRange = (value) => {
+        console.log(new Date(value.getYear(), value.getUTCMonth(), value.getDate() + 10));
+        setDateRange([value, new Date(value.getFullYear(), value.getUTCMonth(), value.getDate() + 10)]);
+    }
 
     return (
         <React.Fragment>
             <Title>Calendar</Title>
             <ResponsiveContainer>
                 <Calendar
-                    tileContent={({ date, view }) => view === 'month' && traverseHolidays(date) ? <Typography>{traverseHolidays(date)}</Typography> : null}
-                    tileDisabled={({ date }) => date.getDay() === 0}
-                ></Calendar>
+                    value={dateRange}
+                    tileContent={tileContent}
+                    tileClassName={tileClassName}
+                    onChange={calcDateRange}
+                />
             </ResponsiveContainer>
         </React.Fragment>
     );

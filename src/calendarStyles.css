@@ -1,7 +1,6 @@
 .react-calendar {
     border-radius: 4px;
     width: auto;
-    
     background: white;
     line-height: 1.125em;
     overflow: hidden;
@@ -9,6 +8,13 @@
 }
 
 .react-calendar__tile {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     padding-top: 1.75rem;
     padding-bottom: 1.75rem;
+    height: 100px;
+}
+
+.react-calendar--holiday {
+    background: rgb(187, 31, 31);
+    color: white;
 }
