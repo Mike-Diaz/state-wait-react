@@ -55,7 +55,6 @@ let tileClassName = ({ date, view }) => {
     }
 }
 
-
 let tileContent = ({date, view}) => {
     if(isHoliday(view, date)){
         return (
@@ -66,17 +65,22 @@ let tileContent = ({date, view}) => {
     }
 }
 
-
-
-
 export default function ReactCalendar() {
-
     let [dateRange, setDateRange] = useState(new Date());
-
+    let [pickUpDate, setPickUPDate] = useState('');
 
     let calcDateRange = (value) => {
-        console.log(new Date(value.getYear(), value.getUTCMonth(), value.getDate() + 10));
-        setDateRange([value, new Date(value.getFullYear(), value.getUTCMonth(), value.getDate() + 10)]);
+        let count = 0;
+        
+        while (count < 11) {
+            var endDate = new Date(value.setDate(value.getDate() + 1));
+            if (endDate.getDay() != 0 && endDate.getDay() != 6 && isHoliday('month', endDate) != true) {
+                count++;
+            }
+        }
+
+        setPickUPDate(new Date(value.getFullYear(), value.getUTCMonth(), value.getDate()).toDateString());
+        setDateRange([new Date(value.getFullYear(), value.getUTCMonth(), value.getDate())]);
     }
 
     return (
@@ -85,11 +89,14 @@ export default function ReactCalendar() {
             <ResponsiveContainer>
                 <Calendar
                     value={dateRange}
+                    // value={new Date (dateRange)}
                     tileContent={tileContent}
                     tileClassName={tileClassName}
                     onChange={calcDateRange}
+                    onViewChange={tileContent}
                 />
             </ResponsiveContainer>
+            {pickUpDate ? <Typography>Pick Up Date: {pickUpDate}</Typography> : ''}
         </React.Fragment>
     );
 }
