@@ -126,7 +126,6 @@ export default function Dashboard() {
             className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
           >
             <MenuIcon />
-            <Typography color="inherit" noWrap className={classes.title}>Customize</Typography>
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Washington State Wait Calculator

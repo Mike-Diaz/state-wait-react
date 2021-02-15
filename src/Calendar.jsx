@@ -27,7 +27,7 @@ const highlightHolidays = (pVisibleMonth) => {
 };
 
 const traverseHolidays = (date) => {
-    let nowDate = new Date();
+    let nowDate = new Date(date);
     let holidays = highlightHolidays(nowDate.getUTCMonth() + 1);
 
     for (let holiday of holidays) {
@@ -56,6 +56,7 @@ let tileClassName = ({ date, view }) => {
 }
 
 let tileContent = ({date, view}) => {
+    console.log("tile content called")
     if(isHoliday(view, date)){
         return (
             <Typography>{traverseHolidays(date)}</Typography>
@@ -88,8 +89,8 @@ export default function ReactCalendar() {
             <Title>Calendar</Title>
             <ResponsiveContainer>
                 <Calendar
+                    calendarType="US"
                     value={dateRange}
-                    // value={new Date (dateRange)}
                     tileContent={tileContent}
                     tileClassName={tileClassName}
                     onChange={calcDateRange}
