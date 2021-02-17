@@ -6,19 +6,22 @@ import Calendar from 'react-calendar';
 import { allFederalHolidaysForYear } from './federalHolidays';
 import 'react-calendar/dist/Calendar.css';
 import './calendarStyles.css';
+import fedHolidays from '@18f/us-federal-holidays';
 
-const highlightHolidays = (pVisibleMonth) => {
-    let holidaysNew = allFederalHolidaysForYear();
+const highlightHolidays = (pYear) => {
+    let holidaysNew = fedHolidays.allForYear(pYear); // allFederalHolidaysForYear();
+    console.log(holidaysNew);
 
-    let visibleMonth = pVisibleMonth;
+    let visibleYear = pYear;
 
     let holidayArray = [];
 
+    // TODO: Refactor this function to use new npm function which takes in a year and returns an array for that year.
     for (let holiday of holidaysNew) {
-        if (holiday.date.getUTCMonth() + 1 === visibleMonth) {
+        if (holiday.date.getUTCFullYear() === visibleYear) {
             holidayArray.push(holiday);
         }
-        if (holiday.date.getUTCMonth() > visibleMonth) {
+        if (holiday.date.getUTCMonth() > visibleYear) {
             break;
         }
     }
@@ -27,8 +30,9 @@ const highlightHolidays = (pVisibleMonth) => {
 };
 
 const traverseHolidays = (date) => {
+    console.log(date);
     let nowDate = new Date(date);
-    let holidays = highlightHolidays(nowDate.getUTCMonth() + 1);
+    let holidays = highlightHolidays(nowDate.getUTCFullYear()); // nowDate.getUTCMonth() + 1);
 
     for (let holiday of holidays) {
         if (holiday.date.toString() === date.toString()) {
@@ -56,12 +60,12 @@ let tileClassName = ({ date, view }) => {
 }
 
 let tileContent = ({date, view}) => {
-    console.log("tile content called")
     if(isHoliday(view, date)){
         return (
             <Typography>{traverseHolidays(date)}</Typography>
         );
     } else {
+        console.log(`no holiday found for ${date}`)
         return null
     }
 }
